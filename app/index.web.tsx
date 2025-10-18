@@ -9,7 +9,7 @@ import {
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Image } from "expo-image";
 import { RSS } from "../data/Models/RSS";
-import { MainContext } from "../services/globalStateStore/MainContext";
+import { MainContext } from "../services/state/MainContext";
 import { newsPageStyle } from "../styles/newsPageStyle";
 
 export function NewsPage() {

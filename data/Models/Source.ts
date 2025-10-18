@@ -1,4 +1,4 @@
-export interface newsSource {
+export interface source {
   id: number;
   url: string;
 }

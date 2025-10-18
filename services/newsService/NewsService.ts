@@ -1,4 +1,4 @@
-import { newsSource } from "../../data/Models/NewsSource";
+import { source } from "../../data/Models/Source";
 import axios from "axios";
 import { RSS } from "../../data/Models/RSS";
 import { AppDataSource } from "../../data/DatabaseContext";
@@ -54,7 +54,7 @@ export class NewsService {
 
   async AddLink(url: string) {
     try {
-      let newsource = new newsSource(url);
+      let newsource = new source(url);
       await AppDataSource.manager.save(newsource);
       console.log("Adding Link Successful");
     } catch (err) {
@@ -64,7 +64,7 @@ export class NewsService {
 
   async GetSources() {
     try {
-      return await AppDataSource.manager.find(newsSource);
+      return await AppDataSource.manager.find(source);
     } catch (err) {
       console.log("Get Links Failed: " + err);
     }
@@ -72,7 +72,7 @@ export class NewsService {
 
   async DeleteLinks() {
     try {
-      await AppDataSource.manager.clear(newsSource);
+      await AppDataSource.manager.clear(source);
       console.log("Deleted All Links");
     } catch (err) {
       console.log("Deleting All Links failed: " + err);
@@ -81,7 +81,7 @@ export class NewsService {
 
   async DeleteLinkFromDatabase(id: number) {
     try {
-      await AppDataSource.manager.delete(newsSource, id);
+      await AppDataSource.manager.delete(source, id);
       console.log("Deleted saved source successfully");
     } catch (err) {
       console.log("Deleting saved source FAILED " + err);

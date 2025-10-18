@@ -1,6 +1,6 @@
 import { Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useContext, useState } from "react";
-import { MainContext } from "../../services/globalStateStore/MainContext";
+import { MainContext } from "../../services/state/MainContext";
 
 export function AddModal({ visible, CloseWindow }) {
   const { newsService } = useContext(MainContext);

@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import React, { useContext, useState } from "react";
-import { MainContext } from "../../services/globalStateStore/MainContext";
+import { MainContext } from "../../services/state/MainContext";
 
 export function Navbar({ navigation }: any) {
   const { selectedPage, setSelectedPage } = useContext(MainContext);
