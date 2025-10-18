@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { NewsService } from "../newsService/NewsService";
+import { NewsService } from "../../newsService/NewsService";
 
 interface MainContextType {
   selectedPage: number;

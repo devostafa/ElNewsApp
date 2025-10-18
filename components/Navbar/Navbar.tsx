@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import React, { useContext, useState } from "react";
-import { MainContext } from "../../services/state/MainContext";
+import { MainContext } from "../../services/state/context/MainContext";
 
 export function Navbar({ navigation }: any) {
   const { selectedPage, setSelectedPage } = useContext(MainContext);
@@ -8,7 +8,7 @@ export function Navbar({ navigation }: any) {
 
   function navigateToMenuPage() {
     setPageToSwitchTo("News");
-    navigation.navigate("MenuPage");
+    navigation.navigate("Menu");
   }
 
   function navigateToNewsPage() {
