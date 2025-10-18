@@ -6,14 +6,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Image } from "expo-image";
-import { RSS } from "../data/Models/RSS";
-import { MainContext } from "../services/state/context/MainContext";
+import { RSS } from "../data/models/RSS";
 import { newsPageStyle } from "../styles/newsPageStyle";
+import { newsService } from "../services/newsService/NewsService";
 
 export function NewsPage() {
-  const { newsService } = useContext(MainContext);
   const [news, setNews] = useState<RSS[]>([]);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 

@@ -1,7 +1,7 @@
-import { source } from "../../data/Models/Source";
+import { Source } from "../../data/models/Source";
 import axios from "axios";
-import { RSS } from "../../data/Models/RSS";
-import { AppDataSource } from "../../data/DatabaseContext";
+import { RSS } from "../../data/models/RSS";
+import { AppDataSource } from "../../data/databaseContext";
 import * as cheerio from "cheerio";
 
 export class NewsService {
@@ -54,7 +54,7 @@ export class NewsService {
 
   async AddLink(url: string) {
     try {
-      let newsource = new source(url);
+      let newsource = new Source(url);
       await AppDataSource.manager.save(newsource);
       console.log("Adding Link Successful");
     } catch (err) {
@@ -64,7 +64,7 @@ export class NewsService {
 
   async GetSources() {
     try {
-      return await AppDataSource.manager.find(source);
+      return await AppDataSource.manager.find(Source);
     } catch (err) {
       console.log("Get Links Failed: " + err);
     }
@@ -72,7 +72,7 @@ export class NewsService {
 
   async DeleteLinks() {
     try {
-      await AppDataSource.manager.clear(source);
+      await AppDataSource.manager.clear(Source);
       console.log("Deleted All Links");
     } catch (err) {
       console.log("Deleting All Links failed: " + err);
@@ -81,10 +81,12 @@ export class NewsService {
 
   async DeleteLinkFromDatabase(id: number) {
     try {
-      await AppDataSource.manager.delete(source, id);
+      await AppDataSource.manager.delete(Source, id);
       console.log("Deleted saved source successfully");
     } catch (err) {
       console.log("Deleting saved source FAILED " + err);
     }
   }
 }
+
+export const newsService = new NewsService();

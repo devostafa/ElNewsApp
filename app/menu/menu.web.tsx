@@ -1,13 +1,13 @@
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import { AddModal } from "../../components/addSourceModal/AddModal";
-import { source } from "../../data/Models/Source";
+import { Source } from "../../data/models/Source";
 import { MainContext } from "../../services/state/context/MainContext";
 
 export function Menu({ navigation }: any) {
   const { newsService } = useContext(MainContext);
 
-  const [links, setLinks] = useState<source[]>([]);
+  const [links, setLinks] = useState<Source[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const openModal = () => {
@@ -94,7 +94,7 @@ export function Menu({ navigation }: any) {
         </TouchableOpacity>
 
         <ScrollView style={{ backgroundColor: "#191923" }}>
-          {links.map((link: source) => (
+          {links.map((link: Source) => (
             <View
               style={{
                 flexDirection: "row",

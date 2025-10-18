@@ -1,4 +1,4 @@
-export interface source {
+export interface Source {
   id: number;
   url: string;
 }
