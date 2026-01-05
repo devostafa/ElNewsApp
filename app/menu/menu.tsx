@@ -1,8 +1,8 @@
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import { AddModal } from "../../components/addSourceModal/AddModal";
-import { Source } from "../../data/models/Source";
-import { MainContext } from "../../services/state/context/MainContext";
+import { Source } from "../../services/database/models/Source";
+import { MainContext } from "../../services/state/context/mainContext";
 
 export function Menu({ navigation }: any) {
   const { newsService } = useContext(MainContext);

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 117 142" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-82.304272,-42.045389)">
+        <g id="SearchIcon" transform="matrix(0.450164,-0.308243,0.308243,0.450164,-104.963303,133.561226)">
+            <path d="M384.567,272.927C342.221,264.848 310.173,227.59 310.173,182.906C310.173,132.326 351.237,91.261 401.818,91.261C452.398,91.261 493.463,132.326 493.463,182.906C493.463,227.59 461.414,264.848 419.068,272.927L419.068,374.929L384.567,374.929L384.567,272.927ZM401.818,114.173C363.883,114.173 333.084,144.971 333.084,182.906C333.084,220.841 363.883,251.64 401.818,251.64C439.753,251.64 470.551,220.841 470.551,182.906C470.551,144.971 439.753,114.173 401.818,114.173Z" style="fill:white;"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,9 @@
+{
+    "configurations": [
+    {
+        "command": "npm start",
+        "name": "Start Expo",
+        "request": "launch",
+    }
+    ]
+}

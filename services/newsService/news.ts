@@ -1,10 +1,10 @@
-import { Source } from "../../data/models/Source";
+import { Source } from "../database/models/Source";
 import axios from "axios";
-import { RSS } from "../../data/models/RSS";
-import { AppDataSource } from "../../data/databaseContext";
+import { RSS } from "../database/models/RSS";
+import { AppDataSource } from "../database/dbContext";
 import * as cheerio from "cheerio";
 
-export class NewsService {
+export class News {
   constructor() {}
 
   async GetRSS() {
@@ -89,4 +89,4 @@ export class NewsService {
   }
 }
 
-export const newsService = new NewsService();
+export const newsService = new News();

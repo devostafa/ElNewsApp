@@ -1,17 +1,9 @@
-import {
-  Animated,
-  Linking,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Animated, Linking } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { Image } from "expo-image";
-import { RSS } from "../data/models/RSS";
-import { newsService } from "../services/newsService/NewsService";
+import { RSS } from "../services/database/models/RSS";
+import { newsService } from "../services/newsService/news";
 
-export function Index() {
+export default function Home() {
   const [news, setNews] = useState<RSS[]>([]);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -32,8 +24,11 @@ export function Index() {
     }).start();
   }, []);
 
-  return (
-    <>
+  return <></>;
+}
+
+{
+  /*
       <ScrollView style={{ backgroundColor: "#191923" }}>
         <TouchableOpacity
           style={{
@@ -122,6 +117,5 @@ export function Index() {
           }}
         ></View>
       </ScrollView>
-    </>
-  );
+      */
 }

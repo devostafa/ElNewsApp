@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 154 130" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-258.477801,-48.2949)">
+        <g id="RefreshIcon" transform="matrix(0,-1,1,0,228.216729,479.606301)">
+            <path d="M364.937,54.568L351.709,37.369L365.577,30.261L390.827,63.089L365.577,95.917L351.709,88.81L365.628,70.713C339.346,71.274 318.212,92.755 318.212,119.173C318.212,145.924 339.931,167.644 366.683,167.644C393.453,167.644 415.154,145.942 415.154,119.173L431.311,119.173C431.311,154.866 402.376,183.801 366.683,183.801C331.014,183.801 302.055,154.842 302.055,119.173C302.055,84.063 330.051,55.493 364.937,54.568Z" style="fill:white;"/>
+        </g>
+    </g>
+</svg>

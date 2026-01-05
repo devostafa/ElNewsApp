@@ -6,155 +6,122 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Image } from "expo-image";
-import { RSS } from "../data/models/RSS";
-import { newsPageStyle } from "../styles/newsPageStyle";
-import { newsService } from "../services/newsService/NewsService";
+import { RSS } from "../services/database/models/RSS";
+import { newsService } from "../services/newsService/news";
+import { newsStyleDesktop } from "../styles/newsStyleDesktop";
 
-export function NewsPage() {
+export default function Home() {
   const [news, setNews] = useState<RSS[]>([]);
   const fadeAnim = useRef(new Animated.Value(0)).current;
-
   const [currentNewsToDisplay, setCurrentNewsToDisplay] = useState<RSS | null>(
     null,
   );
 
-  async function GetNews() {
+  const getNews = async () => {
     let allnews = await newsService.GetRSS();
     setNews(allnews);
-  }
+  };
 
-  function DirectToURL(url: string) {
+  const directToURL = (url: string) => {
     Linking.openURL(url);
-  }
-
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: true,
-    }).start();
-  }, []);
+  };
 
   return (
-    <>
-      <View style={{ flexDirection: "column", flex: 1 }}>
-        {/*News Scroll List*/}
-        <ScrollView style={{ backgroundColor: "#191923" }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#3d4866",
-              padding: 10,
-              margin: 10,
-              borderRadius: 20,
-            }}
-            onPress={() => GetNews()}
-          >
-            <Text
-              style={{
-                color: "white",
-                fontSize: 20,
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
-              Refresh
-            </Text>
-          </TouchableOpacity>
-
-          {news?.map((rss: RSS) => (
-            <View style={{ backgroundColor: "#" }}>
-              <Animated.View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  backgroundColor: "#3d4866",
-                  margin: 10,
-                  borderRadius: 20,
-                  opacity: fadeAnim,
-                }}
-              >
-                <TouchableOpacity
-                  key={rss.title}
-                  style={{ flexDirection: "row", flex: 1 }}
-                  onPress={() => DirectToURL(rss.url)}
+    <View style={newsStyleDesktop.mainContainerDesktop}>
+      {/*News Scroll List*/}
+      <View style={newsStyleDesktop.newsListContainer}>
+        {news?.length == 0 && (
+          <Text style={newsStyleDesktop.newsListInfo}>No news to show...</Text>
+        )}
+        {news?.length > 0 && (
+          <ScrollView style={newsStyleDesktop.newsList}>
+            {news?.map((rss: RSS) => (
+              <View style={{ backgroundColor: "Red" }}>
+                <Animated.View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    backgroundColor: "#3d4866",
+                    margin: 10,
+                    borderRadius: 20,
+                    opacity: fadeAnim,
+                  }}
                 >
-                  <Image
-                    source={{ uri: rss.imageUrl }}
-                    style={{
-                      width: 100,
-                      maxHeight: 200,
-                      borderRadius: 20,
-                      marginRight: 10,
-                    }}
-                  />
-                  <View
-                    style={{
-                      flex: 1,
-                      paddingRight: 10,
-                      paddingTop: 10,
-                      paddingBottom: 10,
-                    }}
+                  <TouchableOpacity
+                    key={rss.title}
+                    style={{ flexDirection: "row", flex: 1 }}
+                    onPress={() => directToURL(rss.url)}
                   >
-                    <Text style={{ color: "white", fontSize: 12, margin: 2 }}>
-                      {rss.source}
-                    </Text>
-                    <Text style={{ color: "#585865", fontSize: 10, margin: 2 }}>
-                      {rss.published}
-                    </Text>
-                    <Text
+                    <Image
+                      source={{ uri: rss.imageUrl }}
                       style={{
-                        color: "white",
-                        fontSize: 18,
-                        fontWeight: "900",
-                        margin: 2,
+                        width: 100,
+                        maxHeight: 200,
+                        borderRadius: 20,
+                        marginRight: 10,
+                      }}
+                    />
+                    <View
+                      style={{
+                        flex: 1,
+                        paddingRight: 10,
+                        paddingTop: 10,
+                        paddingBottom: 10,
                       }}
                     >
-                      {rss.title}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </Animated.View>
-            </View>
-          ))}
-          <View
-            style={{
-              backgroundColor: "#383e56",
-              flex: 1,
-              padding: 5,
-              borderRadius: 20,
-              margin: 10,
-              height: 3,
-            }}
-          ></View>
-        </ScrollView>
+                      <Text style={{ color: "white", fontSize: 12, margin: 2 }}>
+                        {rss.source}
+                      </Text>
+                      <Text
+                        style={{ color: "#585865", fontSize: 10, margin: 2 }}
+                      >
+                        {rss.published}
+                      </Text>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: "900",
+                          margin: 2,
+                        }}
+                      >
+                        {rss.title}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </Animated.View>
+              </View>
+            ))}
+          </ScrollView>
+        )}
       </View>
 
       {/*News Detail*/}
-      <View style={newsPageStyle.newsDetailContainer}>
-        <View style={newsPageStyle.newsDetailHeader}>
+      <View style={newsStyleDesktop.newsDetailContainer}>
+        <View style={newsStyleDesktop.newsDetailHeader}>
           <View>
-            <Text style={newsPageStyle.newsDetailHeaderPublished}>
+            <Text style={newsStyleDesktop.newsDetailHeaderPublished}>
               {currentNewsToDisplay?.published}
             </Text>
-            <Text style={newsPageStyle.Seperator}>-</Text>
-            <Text style={newsPageStyle.newsDetailHeaderSource}>
+            <Text style={newsStyleDesktop.Seperator}>-</Text>
+            <Text style={newsStyleDesktop.newsDetailHeaderSource}>
               {currentNewsToDisplay?.source}
             </Text>
           </View>
-          <Text style={newsPageStyle.newsDetailHeaderText}>
+          <Text style={newsStyleDesktop.newsDetailHeaderText}>
             {currentNewsToDisplay?.title}
           </Text>
         </View>
-        <View style={newsPageStyle.newsDetailBody}>
+        <View style={newsStyleDesktop.newsDetailBody}>
           <Image
             source={{ uri: currentNewsToDisplay?.imageUrl }}
-            style={newsPageStyle.newsDetailImage}
+            style={newsStyleDesktop.newsDetailImage}
           ></Image>
           <Text>{currentNewsToDisplay?.description}</Text>
         </View>
       </View>
-    </>
+    </View>
   );
 }
