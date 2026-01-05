@@ -15,9 +15,7 @@ import { newsStyleDesktop } from "../styles/newsStyleDesktop";
 export default function Home() {
   const [news, setNews] = useState<RSS[]>([]);
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const [currentNewsToDisplay, setCurrentNewsToDisplay] = useState<RSS | null>(
-    null,
-  );
+  const [currentNewsToDisplay, setCurrentNewsToDisplay] = useState<RSS>();
 
   const getNews = async () => {
     let allnews = await newsService.GetRSS();

@@ -8,6 +8,7 @@ import { SearchContextProvider } from "../services/state/context/searchContext";
 import { MainContextProvider } from "../services/state/context/mainContext";
 import { initDb } from "../services/database/dbContext";
 import { Image } from "expo-image";
+import { InitConfig } from "../services/config/config";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,6 +19,7 @@ export default function RootLayout() {
 
   // All startup functions run here
   useEffect(() => {
+    InitConfig();
     initDb();
 
     if (loaded) {
