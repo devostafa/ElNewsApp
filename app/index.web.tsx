@@ -47,7 +47,10 @@ export default function Index({ navigation }: any) {
             </Text>
             <View>
               <Text>Try adding news sources in settings</Text>
-              <TouchableOpacity onPress={navigateToMenuPage}>
+              <TouchableOpacity
+                style={globalStyle.btnIcon}
+                onPress={navigateToMenuPage}
+              >
                 <Image
                   style={globalStyle.icon}
                   source={require("../../assets/SettingsIcon.svg")}

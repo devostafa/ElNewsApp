@@ -25,4 +25,6 @@ export const globalStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  btnIcon: {},
+  icon: {},
 });
