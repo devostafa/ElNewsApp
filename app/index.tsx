@@ -1,14 +1,14 @@
 import { Animated, Linking } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { RSS } from "../services/database/models/RSS";
-import { newsService } from "../services/newsService/news";
+import { Article } from "../services/database/models/Article";
+import { GetRSS } from "../services/news/news";
 
 export default function Home() {
-  const [news, setNews] = useState<RSS[]>([]);
+  const [news, setNews] = useState<Article[]>([]);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   async function GetNews() {
-    const newsResult = await newsService.GetRSS();
+    const newsResult = await GetRSS();
     setNews(newsResult);
   }
 
@@ -51,7 +51,7 @@ export default function Home() {
           </Text>
         </TouchableOpacity>
 
-        {news?.map((rss: RSS) => (
+        {news?.map((rss: Article) => (
           <View style={{ backgroundColor: "#" }}>
             <Animated.View
               style={{

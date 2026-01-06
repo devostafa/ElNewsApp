@@ -1,10 +1,8 @@
 import { Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { useContext, useState } from "react";
-import { MainContext } from "../../services/state/context/mainContext";
+import { useState } from "react";
+import { addSource } from "../../services/news/news";
 
 export function AddModal({ visible, CloseWindow }) {
-  const { newsService } = useContext(MainContext);
-
   const [inputValue, setInputValue] = useState("");
 
   function handleInputChange(text: string) {
@@ -12,7 +10,7 @@ export function AddModal({ visible, CloseWindow }) {
   }
 
   async function SubmitSource() {
-    await newsService.AddLink(inputValue);
+    await addSource(inputValue);
     CloseWindow();
   }
 

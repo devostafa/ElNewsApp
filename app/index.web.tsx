@@ -6,19 +6,22 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Image } from "expo-image";
-import { RSS } from "../services/database/models/RSS";
-import { newsService } from "../services/newsService/news";
+import { Article } from "../services/database/models/Article";
+import { getNews } from "../services/news/news";
 import { newsStyleDesktop } from "../styles/newsStyleDesktop";
+import { MainContext } from "../services/state/context/mainContext";
+import { globalStyle } from "../styles/globalStyle";
 
-export default function Home() {
-  const [news, setNews] = useState<RSS[]>([]);
+export default function Index({ navigation }: any) {
+  const [news, setNews] = useState<Article[]>([]);
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const [currentNewsToDisplay, setCurrentNewsToDisplay] = useState<RSS>();
+  const [currentNewsToDisplay, setCurrentNewsToDisplay] = useState<Article>();
+  const { selectedPage, setSelectedPage } = useContext(MainContext);
 
-  const getNews = async () => {
-    let allnews = await newsService.GetRSS();
+  const fetchNews = async () => {
+    let allnews = await getNews();
     setNews(allnews);
   };
 
@@ -26,16 +29,36 @@ export default function Home() {
     Linking.openURL(url);
   };
 
+  const navigateToMenuPage = () => {
+    setSelectedPage(0);
+    navigation.navigate("Menu");
+  };
+
   return (
     <View style={newsStyleDesktop.mainContainerDesktop}>
       {/*News Scroll List*/}
       <View style={newsStyleDesktop.newsListContainer}>
         {news?.length == 0 && (
-          <Text style={newsStyleDesktop.newsListInfo}>No news to show...</Text>
+          <View
+            style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
+          >
+            <Text style={newsStyleDesktop.newsListInfo}>
+              No news to show...
+            </Text>
+            <View>
+              <Text>Try adding news sources in settings</Text>
+              <TouchableOpacity onPress={navigateToMenuPage}>
+                <Image
+                  style={globalStyle.icon}
+                  source={require("../../assets/SettingsIcon.svg")}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
         )}
         {news?.length > 0 && (
           <ScrollView style={newsStyleDesktop.newsList}>
-            {news?.map((rss: RSS) => (
+            {news?.map((rss: Article) => (
               <View style={{ backgroundColor: "Red" }}>
                 <Animated.View
                   style={{
@@ -117,7 +140,7 @@ export default function Home() {
             source={{ uri: currentNewsToDisplay?.imageUrl }}
             style={newsStyleDesktop.newsDetailImage}
           ></Image>
-          <Text>{currentNewsToDisplay?.description}</Text>
+          <Text>{currentNewsToDisplay?.body}</Text>
         </View>
       </View>
     </View>

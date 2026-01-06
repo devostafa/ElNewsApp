@@ -1,12 +1,14 @@
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { AddModal } from "../../components/addSourceModal/AddModal";
 import { Source } from "../../services/database/models/Source";
-import { MainContext } from "../../services/state/context/mainContext";
+import {
+  DeleteLinkFromDatabase,
+  DeleteLinks,
+  getSources,
+} from "../../services/news/news";
 
 export function Menu({ navigation }: any) {
-  const { newsService } = useContext(MainContext);
-
   const [links, setLinks] = useState<Source[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -20,17 +22,17 @@ export function Menu({ navigation }: any) {
   };
 
   async function GetLinks() {
-    let links = await newsService.GetSources();
+    let links = await getSources();
     setLinks(links);
   }
 
   async function ClearLinks() {
-    await newsService.DeleteLinks();
+    await DeleteLinks();
     GetLinks();
   }
 
   async function DeleteLink(linkid: number) {
-    await newsService.DeleteLinkFromDatabase(linkid);
+    await DeleteLinkFromDatabase(linkid);
     GetLinks();
   }
 

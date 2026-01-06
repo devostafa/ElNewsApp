@@ -1,6 +1,6 @@
 import * as SQLite from "expo-sqlite";
 
-let db: SQLite.SQLiteDatabase | null = null;
+let db: SQLite.SQLiteDatabase;
 
 export const initDb = async () => {
   await createDb();
@@ -11,12 +11,8 @@ export const createDb = async () => {
 
   // create a table called "Sources"
   await db.runAsync(
-    "CREATE TABLE IF NOT EXISTS sources (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, url TEXT)",
+    "CREATE TABLE IF NOT EXISTS Sources (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, url TEXT)",
   );
 };
 
-export const fetchSources = async () => {
-  const allSources = await db.getAllAsync("SELECT * FROM sources");
-
-  return allSources;
-};
+export default db;
