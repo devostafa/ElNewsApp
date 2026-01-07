@@ -1,12 +1,12 @@
 import {
-  Animated,
   Linking,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useContext, useRef, useState } from "react";
+import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
+import React, { useContext, useState } from "react";
 import { Image } from "expo-image";
 import { Article } from "../services/database/models/Article";
 import { getNews } from "../services/news/news";
@@ -16,9 +16,10 @@ import { globalStyle } from "../styles/globalStyle";
 
 export default function Index({ navigation }: any) {
   const [news, setNews] = useState<Article[]>([]);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const [currentNewsToDisplay, setCurrentNewsToDisplay] = useState<Article>();
+  const [selectedArticleIndex, setSelectedArticleIndex] = useState<Article>();
   const { selectedPage, setSelectedPage } = useContext(MainContext);
+
+  const fadeOpacity = useSharedValue(0);
 
   const fetchNews = async () => {
     let allnews = await getNews();
@@ -32,6 +33,16 @@ export default function Index({ navigation }: any) {
   const navigateToMenuPage = () => {
     setSelectedPage(0);
     navigation.navigate("Menu");
+  };
+
+  const selectArticle = (index: number) => {
+    setSelectedArticleIndex(news[index]);
+    fadeOpacity.value = withTiming(1, { duration: 500 });
+  };
+
+  const DeselctArticle = () => {
+    fadeOpacity.value = withTiming(0, { duration: 200 });
+    setSelectedArticleIndex(undefined);
   };
 
   return (
@@ -70,7 +81,7 @@ export default function Index({ navigation }: any) {
                     backgroundColor: "#3d4866",
                     margin: 10,
                     borderRadius: 20,
-                    opacity: fadeAnim,
+                    opacity: fadeOpacity,
                   }}
                 >
                   <TouchableOpacity
@@ -122,8 +133,10 @@ export default function Index({ navigation }: any) {
         )}
       </View>
 
-      {/*News Detail*/}
-      <View style={newsStyleDesktop.newsDetailContainer}>
+      {/*Article Details*/}
+      <Animated.View
+        style={[newsStyleDesktop.newsDetailContainer, { opacity: fadeOpacity }]}
+      >
         <View style={newsStyleDesktop.newsDetailHeader}>
           <View>
             <Text style={newsStyleDesktop.newsDetailHeaderPublished}>
@@ -142,10 +155,10 @@ export default function Index({ navigation }: any) {
           <Image
             source={{ uri: currentNewsToDisplay?.imageUrl }}
             style={newsStyleDesktop.newsDetailImage}
-          ></Image>
+          />
           <Text>{currentNewsToDisplay?.body}</Text>
         </View>
-      </View>
+      </Animated.View>
     </View>
   );
 }

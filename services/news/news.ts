@@ -11,40 +11,43 @@ export const getNews = async () => {
 
     const allArticles = await Promise.all(
       sources.map(async (source) => {
-        const response = await axios.get(source.url, { timeout: 5000 });
-        const isXml = response.headers["content-type"].includes("xml");
-        const parsedData = cheerio.load(response.data, { xml: isXml });
+        const response = await axios.get(source.url);
+        const isXML = response.headers["content-type"].includes("xml");
+        const parsedData = cheerio.load(response.data, { xml: isXML });
 
         const articles: Article[] = [];
 
-        const items = isXml ? parsedData("item, entry") : null;
+        if (isXML) {
+          const items = parsedData("item, entry");
 
-        items.slice(0, 5).each((_, item) => {
-          const fetchedArticle = parsedData(item);
+          items.slice(0, 5).each((_, item) => {
+            const fetchedArticle = parsedData(item);
 
-          const imageUrl =
-            fetchedArticle.find("media\\:thumbnail, enclosure").attr("url") ||
-            "";
+            const imageUrl =
+              fetchedArticle.find("media\\:thumbnail, enclosure").attr("url") ||
+              "";
 
-          articles.push({
-            title: fetchedArticle.find("title").text().trim(),
-            body: (
-              fetchedArticle.find("description").text() ||
-              fetchedArticle.find("summary").text()
-            ).trim(),
-            imageUrl: imageUrl,
-            published: fetchedArticle.find("pubDate, updated").text()
-              ? new Date(
-                  fetchedArticle.find("pubDate, updated").text(),
-                ).toDateString()
-              : "",
-            source: source.name || "",
-            url:
-              fetchedArticle.find("link").text() ||
-              fetchedArticle.find("link").attr("href") ||
-              "",
+            articles.push({
+              title: fetchedArticle.find("title").text().trim(),
+              body: (
+                fetchedArticle.find("description").text() ||
+                fetchedArticle.find("summary").text()
+              ).trim(),
+              imageUrl: imageUrl,
+              published: fetchedArticle.find("pubDate, updated").text()
+                ? new Date(
+                    fetchedArticle.find("pubDate, updated").text(),
+                  ).toDateString()
+                : "",
+              source: source.name || "",
+              url:
+                fetchedArticle.find("link").text() ||
+                fetchedArticle.find("link").attr("href") ||
+                "",
+            });
           });
-        });
+        } else {
+        }
 
         return articles;
       }),
@@ -58,11 +61,11 @@ export const getNews = async () => {
 
 export const addSource = async (url: string) => {
   try {
-    const sourceHTML = await axios.get(url);
+    const response = await axios.get(url);
 
-    const htmlData = cheerio.load(sourceHTML.data);
+    const parsedData = cheerio.load(response.data);
 
-    const name = htmlData("title").text();
+    const name = parsedData("title").text();
 
     await db.runAsync(
       `INSERT INTO Sources (name, url) VALUES ('${name}', '${url}')`,
