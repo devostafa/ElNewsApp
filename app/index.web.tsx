@@ -6,24 +6,26 @@ import {
   View,
 } from "react-native";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Image } from "expo-image";
 import { Article } from "../services/database/models/Article";
-import { getNews } from "../services/news/news";
-import { newsStyleDesktop } from "../styles/newsStyleDesktop";
+import { newsStyle } from "../styles/newsStyle";
 import { MainContext } from "../services/state/context/mainContext";
 import { globalStyle } from "../styles/globalStyle";
+import { fetchNews } from "../services/news/news";
 
 export default function Index({ navigation }: any) {
-  const [news, setNews] = useState<Article[]>([]);
-  const [selectedArticleIndex, setSelectedArticleIndex] = useState<Article>();
-  const { selectedPage, setSelectedPage } = useContext(MainContext);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [selectedArticleIndex, setSelectedArticleIndex] = useState<
+    number | null
+  >(null);
+  const { setSelectedPage } = useContext(MainContext);
 
   const fadeOpacity = useSharedValue(0);
 
-  const fetchNews = async () => {
-    let allnews = await getNews();
-    setNews(allnews);
+  const getNews = async () => {
+    const allArticles = await fetchNews();
+    setArticles(allArticles);
   };
 
   const directToURL = (url: string) => {
@@ -32,133 +34,115 @@ export default function Index({ navigation }: any) {
 
   const navigateToMenuPage = () => {
     setSelectedPage(0);
-    navigation.navigate("Menu");
+    navigation.navigate("Settings");
   };
 
   const selectArticle = (index: number) => {
-    setSelectedArticleIndex(news[index]);
+    setSelectedArticleIndex(index);
     fadeOpacity.value = withTiming(1, { duration: 500 });
   };
 
-  const DeselctArticle = () => {
+  const deselctArticle = () => {
     fadeOpacity.value = withTiming(0, { duration: 200 });
     setSelectedArticleIndex(undefined);
   };
 
+  useEffect(() => {
+    getNews();
+  }, []);
+
   return (
-    <View style={newsStyleDesktop.mainContainerDesktop}>
+    <View style={newsStyle.newsPageDesktop}>
       {/*News Scroll List*/}
-      <View style={newsStyleDesktop.newsListContainer}>
-        {news?.length == 0 && (
-          <View
-            style={{ flex: 1, flexDirection: "column", alignItems: "center" }}
-          >
-            <Text style={newsStyleDesktop.newsListInfo}>
-              No news to show...
-            </Text>
-            <View>
-              <Text>Try adding news sources in settings</Text>
+      <View style={newsStyle.newsListContainer}>
+        {articles?.length == 0 && (
+          <View style={newsStyle.newsListEmpty}>
+            <Text style={newsStyle.newsListInfo}>No news to show...</Text>
+            <View style={newsStyle.addNewsInfo}>
+              <Text style={newsStyle.addNewsInfoText}>
+                Try adding news sources in settings
+              </Text>
               <TouchableOpacity
                 style={globalStyle.btnIcon}
                 onPress={navigateToMenuPage}
               >
                 <Image
                   style={globalStyle.icon}
-                  source={require("../../assets/SettingsIcon.svg")}
+                  source={require("../assets/SettingsIcon.svg")}
                 />
               </TouchableOpacity>
             </View>
           </View>
         )}
-        {news?.length > 0 && (
-          <ScrollView style={newsStyleDesktop.newsList}>
-            {news?.map((rss: Article) => (
-              <View style={{ backgroundColor: "Red" }}>
-                <Animated.View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    backgroundColor: "#3d4866",
-                    margin: 10,
-                    borderRadius: 20,
-                    opacity: fadeOpacity,
-                  }}
-                >
-                  <TouchableOpacity
-                    key={rss.title}
-                    style={{ flexDirection: "row", flex: 1 }}
-                    onPress={() => directToURL(rss.url)}
+        {articles?.length > 0 && (
+          <ScrollView style={newsStyle.newsList}>
+            {articles?.map((article: Article, index) => (
+              <TouchableOpacity
+                onPress={() => selectArticle(index)}
+                key={index}
+              >
+                <View>
+                  <Animated.View
+                    style={[newsStyle.newsCard, { opacity: fadeOpacity }]}
                   >
-                    <Image
-                      source={{ uri: rss.imageUrl }}
-                      style={{
-                        width: 100,
-                        maxHeight: 200,
-                        borderRadius: 20,
-                        marginRight: 10,
-                      }}
-                    />
-                    <View
-                      style={{
-                        flex: 1,
-                        paddingRight: 10,
-                        paddingTop: 10,
-                        paddingBottom: 10,
-                      }}
+                    <TouchableOpacity
+                      key={article.title}
+                      style={{ flexDirection: "row", flex: 1 }}
+                      onPress={() => directToURL(article.url)}
                     >
-                      <Text style={{ color: "white", fontSize: 12, margin: 2 }}>
-                        {rss.source}
-                      </Text>
-                      <Text
-                        style={{ color: "#585865", fontSize: 10, margin: 2 }}
-                      >
-                        {rss.published}
-                      </Text>
-                      <Text
-                        style={{
-                          color: "white",
-                          fontSize: 18,
-                          fontWeight: "900",
-                          margin: 2,
-                        }}
-                      >
-                        {rss.title}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                </Animated.View>
-              </View>
+                      <Image
+                        source={{ uri: article.imageUrl }}
+                        style={newsStyle.newsCardImage}
+                      />
+                      <View style={newsStyle.newsCardTextContainer}>
+                        <Text style={newsStyle.newsCardSource}>
+                          {article.source}
+                        </Text>
+                        <Text style={newsStyle.newsCardPublished}>
+                          {article.published}
+                        </Text>
+                        <Text style={newsStyle.newsCardTitle}>
+                          {article.title}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </Animated.View>
+                </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         )}
       </View>
 
       {/*Article Details*/}
-      <Animated.View
-        style={[newsStyleDesktop.newsDetailContainer, { opacity: fadeOpacity }]}
-      >
-        <View style={newsStyleDesktop.newsDetailHeader}>
-          <View>
-            <Text style={newsStyleDesktop.newsDetailHeaderPublished}>
-              {currentNewsToDisplay?.published}
-            </Text>
-            <Text style={newsStyleDesktop.Seperator}>-</Text>
-            <Text style={newsStyleDesktop.newsDetailHeaderSource}>
-              {currentNewsToDisplay?.source}
+      {selectedArticleIndex != null && (
+        <Animated.View
+          style={[newsStyle.newsDetailContainer, { opacity: fadeOpacity }]}
+        >
+          <View style={newsStyle.newsDetailHeader}>
+            <View>
+              <Text style={newsStyle.newsDetailHeaderPublished}>
+                {articles[selectedArticleIndex].published}
+              </Text>
+              <Text style={newsStyle.newsDetailHeaderSource}>
+                {articles[selectedArticleIndex]?.source}
+              </Text>
+            </View>
+            <Text style={newsStyle.newsDetailHeaderText}>
+              {articles[selectedArticleIndex]?.title}
             </Text>
           </View>
-          <Text style={newsStyleDesktop.newsDetailHeaderText}>
-            {currentNewsToDisplay?.title}
-          </Text>
-        </View>
-        <View style={newsStyleDesktop.newsDetailBody}>
-          <Image
-            source={{ uri: currentNewsToDisplay?.imageUrl }}
-            style={newsStyleDesktop.newsDetailImage}
-          />
-          <Text>{currentNewsToDisplay?.body}</Text>
-        </View>
-      </Animated.View>
+          <View style={newsStyle.newsDetailBody}>
+            <Image
+              style={newsStyle.newsDetailImage}
+              source={{ uri: articles[selectedArticleIndex]?.imageUrl }}
+            />
+            <Text style={newsStyle.newsDetailBodyText}>
+              {articles[selectedArticleIndex]?.body}
+            </Text>
+          </View>
+        </Animated.View>
+      )}
     </View>
   );
 }

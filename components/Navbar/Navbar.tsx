@@ -1,6 +1,5 @@
 import {
   Platform,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -8,9 +7,10 @@ import {
 } from "react-native";
 import React, { useContext } from "react";
 import { MainContext } from "../../services/state/context/mainContext";
-import { globalStyle, primaryTextColor } from "../../styles/globalStyle";
+import { globalStyle } from "../../styles/globalStyle";
 import { SearchContext } from "../../services/state/context/searchContext";
 import { Image } from "expo-image";
+import { navbarStyle } from "../../styles/navbarStyle";
 
 export function Navbar({ navigation }: any) {
   const { selectedPage, setSelectedPage } = useContext(MainContext);
@@ -18,7 +18,7 @@ export function Navbar({ navigation }: any) {
 
   const navigateToMenuPage = () => {
     setSelectedPage(0);
-    navigation.navigate("Menu");
+    navigation.navigate("Settings");
   };
 
   const navigateToNewsPage = () => {
@@ -46,15 +46,24 @@ export function Navbar({ navigation }: any) {
           <Image source={require("../../assets/SearchIcon.svg")} />
         </View>
         <View style={navbarStyle.interactivityContainer}>
-          <TouchableOpacity style={globalStyle.btn}>
-            <Image source={require("../../assets/RefreshIcon.svg")} />
+          <TouchableOpacity style={navbarStyle.btnIcon}>
+            <Image
+              style={globalStyle.icon}
+              source={require("../../assets/RefreshIcon.svg")}
+            />
           </TouchableOpacity>
-          <TouchableOpacity onPress={navigateMenu} style={globalStyle.btn}>
+          <TouchableOpacity style={navbarStyle.btnIcon} onPress={navigateMenu}>
             {selectedPage === 0 && (
-              <Image source={require("../../assets/SettingsIcon.svg")} />
+              <Image
+                style={globalStyle.icon}
+                source={require("../../assets/SettingsIcon.svg")}
+              />
             )}
             {selectedPage === 1 && (
-              <Image source={require("../../assets/NewsIcon.svg")} />
+              <Image
+                style={globalStyle.icon}
+                source={require("../../assets/NewsIcon.svg")}
+              />
             )}
           </TouchableOpacity>
         </View>
@@ -79,46 +88,3 @@ export function Navbar({ navigation }: any) {
     </View>
   );
 }
-
-const navbarStyle = StyleSheet.create({
-  navbarDesktop: {
-    backgroundColor: "#3d4866",
-    padding: 20,
-    height: 60,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  navbarMobile: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  navIcon: {
-    backgroundColor: "#3d3866",
-    padding: 10,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#332f57",
-    padding: 10,
-    borderRadius: 20,
-  },
-  searchText: {
-    outlineWidth: 0,
-    userSelect: "none",
-    fontSize: 18,
-    color: primaryTextColor,
-  },
-  interactivityContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#3d3866",
-    padding: 10,
-  },
-});

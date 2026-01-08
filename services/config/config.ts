@@ -1,22 +1,16 @@
-import {
-  AsyncStorage,
-  createAsyncStorage,
-} from "@react-native-async-storage/async-storage";
+import { createAsyncStorage } from "@react-native-async-storage/async-storage";
 
-let config: AsyncStorage;
+const config = createAsyncStorage("Config");
 
 export async function InitConfig() {
-  const [check1, check2] = await Promise.all([
-    config.getItem("theme"),
-    config.getItem("language"),
-  ]);
+  const theme = await config.getItem("theme");
+  const language = await config.getItem("language");
 
-  if (check1 && check2) {
-    return;
-  } else {
-    config = createAsyncStorage("Config");
-    await config.setItem("theme", "0");
-    await config.setItem("language", "en");
+  if (theme === null && language === null) {
+    await Promise.all([
+      config.setItem("theme", "0"),
+      config.setItem("language", "en"),
+    ]);
   }
 }
 

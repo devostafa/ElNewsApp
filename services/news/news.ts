@@ -4,7 +4,7 @@ import db from "../database/dbContext";
 import * as cheerio from "cheerio";
 import { Source } from "../database/models/Source";
 
-export const getNews = async () => {
+export const fetchNews = async () => {
   try {
     const sources: Source[] = await getSources();
     if (!sources || sources.length === 0) return [];

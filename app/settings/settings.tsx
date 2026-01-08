@@ -8,7 +8,7 @@ import {
   getSources,
 } from "../../services/news/news";
 
-export function Menu({ navigation }: any) {
+export function Settings({ navigation }: any) {
   const [links, setLinks] = useState<Source[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
