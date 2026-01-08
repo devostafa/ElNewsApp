@@ -1,7 +1,7 @@
 {
   "expo": {
     "scheme": "el-news-app",
-    "name": "el-news-app",
+    "name": "ElNews",
     "slug": "el-news-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,14 +15,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.stevelorde.elnewsapp"
+      "bundleIdentifier": "com.devostafa.elnewsapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/customicon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.stevelorde.elnewsapp"
+      "package": "com.devostafa.elnewsapp"
     },
     "web": {
       "bundler": "metro",
@@ -33,7 +33,7 @@
         "projectId": "7f29a45e-6659-4836-ac0b-323d582ea1d5"
       }
     },
-    "owner": "stevelorde",
+    "owner": "devostafa",
     "plugins": [
       "expo-router",
       [
