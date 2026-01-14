@@ -13,13 +13,15 @@ import { newsStyle } from "../styles/newsStyle";
 import { MainContext } from "../services/state/context/mainContext";
 import { globalStyle } from "../styles/globalStyle";
 import { fetchNews } from "../services/news/news";
+import { useRouter } from "expo-router";
 
-export default function Index({ navigation }: any) {
+const Index = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [selectedArticleIndex, setSelectedArticleIndex] = useState<
     number | null
   >(null);
   const { setSelectedPage } = useContext(MainContext);
+  const router = useRouter();
 
   const fadeOpacity = useSharedValue(0);
 
@@ -34,7 +36,7 @@ export default function Index({ navigation }: any) {
 
   const navigateToMenuPage = () => {
     setSelectedPage(0);
-    navigation.navigate("Settings");
+    router.navigate("/settings");
   };
 
   const selectArticle = (index: number) => {
@@ -75,42 +77,44 @@ export default function Index({ navigation }: any) {
           </View>
         )}
         {articles?.length > 0 && (
-          <ScrollView style={newsStyle.newsList}>
-            {articles?.map((article: Article, index) => (
-              <TouchableOpacity
-                onPress={() => selectArticle(index)}
-                key={index}
-              >
-                <View>
-                  <Animated.View
-                    style={[newsStyle.newsCard, { opacity: fadeOpacity }]}
-                  >
-                    <TouchableOpacity
-                      key={article.title}
-                      style={{ flexDirection: "row", flex: 1 }}
-                      onPress={() => directToURL(article.url)}
+          <View style={newsStyle.newsList}>
+            <ScrollView>
+              {articles?.map((article: Article, index) => (
+                <TouchableOpacity
+                  onPress={() => selectArticle(index)}
+                  key={index}
+                >
+                  <View>
+                    <Animated.View
+                      style={[newsStyle.newsCard, { opacity: fadeOpacity }]}
                     >
-                      <Image
-                        source={{ uri: article.imageUrl }}
-                        style={newsStyle.newsCardImage}
-                      />
-                      <View style={newsStyle.newsCardTextContainer}>
-                        <Text style={newsStyle.newsCardSource}>
-                          {article.source}
-                        </Text>
-                        <Text style={newsStyle.newsCardPublished}>
-                          {article.published}
-                        </Text>
-                        <Text style={newsStyle.newsCardTitle}>
-                          {article.title}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </Animated.View>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+                      <TouchableOpacity
+                        key={article.title}
+                        style={{ flexDirection: "row", flex: 1 }}
+                        onPress={() => directToURL(article.url)}
+                      >
+                        <Image
+                          source={{ uri: article.imageUrl }}
+                          style={newsStyle.newsCardImage}
+                        />
+                        <View style={newsStyle.newsCardTextContainer}>
+                          <Text style={newsStyle.newsCardSource}>
+                            {article.source}
+                          </Text>
+                          <Text style={newsStyle.newsCardPublished}>
+                            {article.published}
+                          </Text>
+                          <Text style={newsStyle.newsCardTitle}>
+                            {article.title}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    </Animated.View>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
         )}
       </View>
 
@@ -145,4 +149,6 @@ export default function Index({ navigation }: any) {
       )}
     </View>
   );
-}
+};
+
+export default Index;

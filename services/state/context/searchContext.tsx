@@ -10,7 +10,7 @@ export const SearchContext = createContext<SearchContextType>({
   setSearch(_value: ((prevState: string) => string) | string): void {},
 });
 
-export function SearchContextProvider({ children }) {
+export const SearchContextProvider = ({ children }) => {
   const [search, setSearch] = useState<string>();
 
   const contextValue: SearchContextType = {
@@ -23,4 +23,4 @@ export function SearchContextProvider({ children }) {
       {children}
     </SearchContext.Provider>
   );
-}
+};

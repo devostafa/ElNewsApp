@@ -77,7 +77,7 @@ export const addSource = async (url: string) => {
   }
 };
 
-export const getSources = async () => {
+export const fetchSources = async () => {
   try {
     const rows = await db.getAllAsync("SELECT * FROM Sources");
 
@@ -110,5 +110,27 @@ export const deleteSourceFromDatabase = async (id: number) => {
     console.log("Deleted news source successfully");
   } catch (err) {
     console.log("Deleting news source FAILED " + err);
+  }
+};
+
+export const fetchSourceIconUrl = async (sourceUrl: string) => {
+  try {
+    const response = await axios.get(sourceUrl).then((res) => res.data);
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(response, "text/html");
+    const linkTags = doc.getElementsByTagName("link");
+
+    for (let i = 0; i < linkTags.length; i++) {
+      if (linkTags[i].getAttribute("rel") === "icon") {
+        const iconUrl = linkTags[i].getAttribute("href");
+        return iconUrl;
+      }
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error fetching or parsing the HTML response:", error);
+    return null;
   }
 };

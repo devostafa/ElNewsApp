@@ -4,14 +4,17 @@ import { Source } from "../../services/database/models/Source";
 import {
   deleteAllSources,
   deleteSourceFromDatabase,
+  getSources,
 } from "../../services/news/news";
 import { settingsStyle } from "../../styles/settingsStyle";
 import { Image } from "expo-image";
 import { globalStyle } from "../../styles/globalStyle";
+import { useRouter } from "expo-router";
 
-export const Menu = ({ navigation }: any) => {
+export const Settings = () => {
   const [sources, setSources] = useState<Source[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const router = useRouter();
 
   const openModal = () => {
     setModalVisible(true);
@@ -19,32 +22,32 @@ export const Menu = ({ navigation }: any) => {
 
   const closeModal = () => {
     setModalVisible(false);
-    getSources();
+    fetchSources();
   };
 
-  const getSources = async () => {
+  const fetchSources = async () => {
     const queriedSources = await getSources();
     setSources(queriedSources);
   };
 
   const clearSources = async () => {
     await deleteAllSources();
-    getSources();
+    fetchSources();
   };
 
   const deleteSource = async (index: number) => {
     await deleteSourceFromDatabase(index);
-    getSources();
+    fetchSources();
   };
 
   const editSource = (index: number) => {};
 
   const navigateBack = () => {
-    navigation.navigate("NewsScreen");
+    router.navigate("/");
   };
 
   useEffect(() => {
-    getSources();
+    fetchSources();
   }, []);
 
   return (
@@ -71,7 +74,7 @@ export const Menu = ({ navigation }: any) => {
                 <Image style={settingsStyle.sourceIcon} source={source.url} />
                 <Text style={settingsStyle.sourceName}>{source.name}</Text>
                 <TouchableOpacity
-                  style={settingsStyle.smallBtn}
+                  style={globalStyle.criticalBtn}
                   onPress={() => deleteSource(source.id)}
                 >
                   <Text style={{ color: "red", fontWeight: "bold" }}>X</Text>
@@ -79,7 +82,7 @@ export const Menu = ({ navigation }: any) => {
               </View>
             ))}
             <TouchableOpacity
-              style={settingsStyle.smallBtn}
+              style={globalStyle.btnIcon}
               onPress={() => openModal()}
             >
               <Image

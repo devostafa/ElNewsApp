@@ -1,20 +1,22 @@
 import { Animated, Linking } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Article } from "../services/database/models/Article";
-import { GetRSS } from "../services/news/news";
+import { fetchNews } from "../services/news/news";
 
-export default function Home() {
+const Home = () => {
   const [news, setNews] = useState<Article[]>([]);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  async function GetNews() {
-    const newsResult = await GetRSS();
-    setNews(newsResult);
-  }
+  const GetNews = async () => {
+    const newsResult = await fetchNews();
+    if (newsResult) {
+      setNews(newsResult);
+    }
+  };
 
-  function DirectToURL(url: string) {
+  const DirectToURL = (url: string) => {
     Linking.openURL(url);
-  }
+  };
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -25,7 +27,9 @@ export default function Home() {
   }, []);
 
   return <></>;
-}
+};
+
+export default Home;
 
 {
   /*

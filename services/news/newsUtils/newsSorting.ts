@@ -1,3 +1,1 @@
-export function SortRSS() {
-
-}
+export const SortRSS = () => {};

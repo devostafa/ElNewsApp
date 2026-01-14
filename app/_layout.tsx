@@ -12,7 +12,7 @@ import { InitConfig } from "../services/config/config";
 
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+const RootLayout = () => {
   const loaded = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -25,7 +25,7 @@ export default function RootLayout() {
     if (loaded) {
       SplashScreen.hideAsync();
     }
-  }, []);
+  }, [loaded]);
 
   if (!loaded) {
     return null;
@@ -52,4 +52,6 @@ export default function RootLayout() {
       </MainContextProvider>
     </>
   );
-}
+};
+
+export default RootLayout;

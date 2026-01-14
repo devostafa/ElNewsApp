@@ -18,6 +18,10 @@ export const globalStyle = StyleSheet.create({
     bottom: 0,
     zIndex: -1,
   },
+  pageMobile: {
+    flex: 1,
+    flexDirection: "column",
+  },
   btn: {
     padding: 10,
     borderRadius: 20,
@@ -44,4 +48,6 @@ export const globalStyle = StyleSheet.create({
     width: 40,
     height: 40,
   },
+  text: {},
+  titleText: {},
 });

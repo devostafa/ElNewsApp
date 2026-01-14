@@ -1,7 +1,7 @@
 /*
 PLACEHOLDER FOR NOW
 
-export function NewsSourcesBottomBar() {
+export const NewsSourcesBottomBar = () => {
     const [newsSources, setNewsSources] = useState<string>();
 
     return <>

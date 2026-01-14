@@ -10,7 +10,7 @@ export const MainContext = createContext<MainContextType>({
   setSelectedPage(_value: ((prevState: number) => number) | number): void {},
 });
 
-export function MainContextProvider({ children }) {
+export const MainContextProvider = ({ children }) => {
   const [selectedTab, setSelectedTab] = useState(0);
 
   const contextValue: MainContextType = {
@@ -21,4 +21,4 @@ export function MainContextProvider({ children }) {
   return (
     <MainContext.Provider value={contextValue}>{children}</MainContext.Provider>
   );
-}
+};

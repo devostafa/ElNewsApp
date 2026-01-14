@@ -11,19 +11,21 @@ import { globalStyle } from "../../styles/globalStyle";
 import { SearchContext } from "../../services/state/context/searchContext";
 import { Image } from "expo-image";
 import { navbarStyle } from "../../styles/navbarStyle";
+import { useRouter } from "expo-router";
 
-export function Navbar({ navigation }: any) {
+export const Navbar = () => {
   const { selectedPage, setSelectedPage } = useContext(MainContext);
   const { search, setSearch } = useContext(SearchContext);
+  const router = useRouter();
 
   const navigateToMenuPage = () => {
     setSelectedPage(0);
-    navigation.navigate("Settings");
+    router.navigate("/settings");
   };
 
   const navigateToNewsPage = () => {
     setSelectedPage(1);
-    navigation.navigate("Index");
+    router.navigate("/");
   };
 
   const navigateMenu = () => {
@@ -87,4 +89,4 @@ export function Navbar({ navigation }: any) {
       </TouchableOpacity>
     </View>
   );
-}
+};

@@ -2,17 +2,17 @@ import { Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 import { addSource } from "../../services/news/news";
 
-export function AddModal({ visible, CloseWindow }) {
+export const AddModal = ({ visible, CloseWindow }) => {
   const [inputValue, setInputValue] = useState("");
 
-  function handleInputChange(text: string) {
+  const handleInputChange = (text: string) => {
     setInputValue(text);
-  }
+  };
 
-  async function SubmitSource() {
+  const SubmitSource = async () => {
     await addSource(inputValue);
     CloseWindow();
-  }
+  };
 
   return (
     <>
@@ -99,4 +99,4 @@ export function AddModal({ visible, CloseWindow }) {
       </Modal>
     </>
   );
-}
+};

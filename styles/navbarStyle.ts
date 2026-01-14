@@ -7,7 +7,7 @@ import {
 
 export const navbarStyle = StyleSheet.create({
   navbarDesktop: {
-    backgroundColor: backgroundColor,
+    backgroundColor: `color-mix(in srgb, ${backgroundColor}, transparent 1%)`,
     padding: 40,
     height: 60,
     flexDirection: "row",
